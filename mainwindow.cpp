@@ -16,10 +16,17 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *rightLayout = new QVBoxLayout();
     rightLayout->addWidget(table = new QTableWidget());
     rightLayout->addWidget(saveButton = new QPushButton("Save"));
+    rightLayout->addWidget(processButton = new QPushButton("Process\ndrawing"));
 
     connect(saveButton, &QPushButton::clicked, this, &MainWindow::bSave);
+    connect(processButton, &QPushButton::clicked, this, &MainWindow::bProcess);
 
-    mainLayout->addWidget(view = new PollingGraphicsView(), 1);
+    QVBoxLayout *leftLayout = new QVBoxLayout();
+
+    leftLayout->addWidget(view = new PollingGraphicsView(), 3);
+    leftLayout->addWidget(console = new QTextEdit(), 1);
+
+    mainLayout->addLayout(leftLayout);
     mainLayout->addLayout(rightLayout);
 
     table->setColumnCount(5);
@@ -34,8 +41,21 @@ MainWindow::MainWindow(QWidget *parent)
 
     table->setHorizontalHeaderLabels(QStringList() << "Evt" << "t" << "x" << "y" << "Notes");
     connect(view, &PollingGraphicsView::mouseEvent, this, &MainWindow::onMouseEvent);
-
+    connect(view, &PollingGraphicsView::sketchCleared, this, &MainWindow::sketchCleared);
     connect(table, &QTableWidget::currentCellChanged, this, &MainWindow::updateCrosshairs);
+
+    when0 = 0;
+}
+
+void MainWindow::sketchCleared() {
+    int row;
+    table->setRowCount(0);
+
+    when0 = -1;
+}
+
+void MainWindow::bProcess() {
+    console->append("Did some stuff; here are the results!");
 }
 
 MainWindow::~MainWindow()
@@ -44,8 +64,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::updateCrosshairs(int curRow, int, int, int) {
-    view->setCrosshairsVisible(true);
-    view->setCrosshairsPos(QPointF(table->item(curRow, 2)->text().toDouble(), table->item(curRow, 3)->text().toDouble()));
+    if (curRow==-1)  // If no selection, curRow==-1; hide crosshairs and don't try to update position!
+        view->setCrosshairsVisible(false);
+    else {
+        view->setCrosshairsVisible(true);
+        view->setCrosshairsPos(QPointF(table->item(curRow, 2)->text().toDouble(), table->item(curRow, 3)->text().toDouble()));
+    }
 }
 
 void MainWindow::bSave() {
@@ -72,7 +96,6 @@ void MainWindow::bSave() {
 
 void MainWindow::onMouseEvent(int type, int when, QPointF pos) {
     static QString types = "PRM";
-    static int when0 = -1;
 
     if (when0==-1) when0 = when;
 

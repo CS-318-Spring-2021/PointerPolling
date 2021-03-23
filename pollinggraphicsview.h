@@ -29,9 +29,11 @@ protected:
     virtual void mousePressEvent(QMouseEvent *evt) override;
     virtual void mouseReleaseEvent(QMouseEvent *evt) override;
     virtual void mouseMoveEvent(QMouseEvent *evt) override;
+    virtual void keyPressEvent(QKeyEvent *evt) override;
 
 signals:
     void mouseEvent(int type, int when, QPointF pos);
+    void sketchCleared();
 };
 
 #endif // POLLINGGRAPHICSVIEW_H

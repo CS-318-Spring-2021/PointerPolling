@@ -48,3 +48,12 @@ void PollingGraphicsView::mouseMoveEvent(QMouseEvent *evt) {
     emit mouseEvent(MouseMoved, QDateTime::currentMSecsSinceEpoch(), pos);
     maybeAddSegment(pos);
 }
+
+void PollingGraphicsView::keyPressEvent(QKeyEvent *evt) {
+    if (evt->key()==Qt::Key_Delete) {
+        mScene.removeItem(crosshairs);
+        mScene.clear();
+        mScene.addItem(crosshairs);
+        emit sketchCleared();
+    }
+}
