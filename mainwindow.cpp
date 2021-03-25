@@ -48,10 +48,9 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::sketchCleared() {
-    int row;
     table->setRowCount(0);
 
-    when0 = -1;
+    when0 = 0;
 }
 
 void MainWindow::bProcess() {
@@ -94,10 +93,10 @@ void MainWindow::bSave() {
     return;
 }
 
-void MainWindow::onMouseEvent(int type, int when, QPointF pos) {
+void MainWindow::onMouseEvent(int type, ulong when, QPointF pos) {
     static QString types = "PRM";
 
-    if (when0==-1) when0 = when;
+    if (when0==0) when0 = when;
 
     int row;
     table->setRowCount((row = table->rowCount())+1);

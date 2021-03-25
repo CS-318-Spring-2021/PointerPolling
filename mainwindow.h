@@ -17,14 +17,14 @@ class MainWindow : public QMainWindow
     QPushButton *saveButton, *processButton;
     QTextEdit *console;
 
-    int when0;
+    ulong when0;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 public slots:
-    void onMouseEvent(int type, int when, QPointF scenePos);
+    void onMouseEvent(int type, ulong when, QPointF scenePos);
     void bSave();
     void updateCrosshairs(int curRow, int curCol, int prevRow, int prevCol);
     void bProcess();

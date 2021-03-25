@@ -32,7 +32,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent *evt) override;
 
 signals:
-    void mouseEvent(int type, int when, QPointF pos);
+    void mouseEvent(int type, ulong when, QPointF pos);
     void sketchCleared();
 };
 

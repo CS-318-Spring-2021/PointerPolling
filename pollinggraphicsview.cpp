@@ -26,7 +26,7 @@ void PollingGraphicsView::setCrosshairsPos(const QPointF &pos) {
 
 void PollingGraphicsView::mousePressEvent(QMouseEvent *evt) {
     QPointF pos = mapToScene(evt->pos());
-    emit mouseEvent(MousePressed, QDateTime::currentMSecsSinceEpoch(), pos);
+    emit mouseEvent(MousePressed, evt->timestamp(), pos);
     lastPos = pos;
 }
 
@@ -39,13 +39,13 @@ void PollingGraphicsView::maybeAddSegment(const QPointF &pos) {
 
 void PollingGraphicsView::mouseReleaseEvent(QMouseEvent *evt) {
     QPointF pos = mapToScene(evt->pos());
-    emit mouseEvent(MouseReleased, QDateTime::currentMSecsSinceEpoch(), pos);
+    emit mouseEvent(MouseReleased, evt->timestamp(), pos);
     maybeAddSegment(pos);
 }
 
 void PollingGraphicsView::mouseMoveEvent(QMouseEvent *evt) {
     QPointF pos = mapToScene(evt->pos());
-    emit mouseEvent(MouseMoved, QDateTime::currentMSecsSinceEpoch(), pos);
+    emit mouseEvent(MouseMoved, evt->timestamp(), pos);
     maybeAddSegment(pos);
 }
 
